@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.customer_main')
 @php
     $title = 'Customer Login';
 @endphp
