@@ -30,12 +30,6 @@
                                 <li><a class="dropdown-item" href="admin-login">Admin Login</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item me-2">
-                            <a class="btn btn-outline-success" href="add_item">Add Items</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="btn btn-outline-success" href="view_orders">View Orders</a>
-                        </li>
                     </ul>
                 </div>
             </div>

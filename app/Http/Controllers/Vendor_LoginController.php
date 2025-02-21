@@ -27,6 +27,6 @@ class Vendor_LoginController extends Controller
             Auth::login($vendor);
             return redirect('/vendor');
         }
-        return back()->withErrors(['email' => 'Invalid Credentials']);
+        return back()->withErrors(['email' => 'Invalid Email', 'password' => 'Invalid Password']);
     }
 }

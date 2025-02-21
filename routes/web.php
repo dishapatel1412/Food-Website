@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin_LoginController;
 use App\Http\Controllers\Customer_LoginController;
 use App\Http\Controllers\Customer_RegisterController;
+use App\Http\Controllers\FoodItems_Controller;
 use App\Http\Controllers\Vendor_LoginController;
 use App\Http\Controllers\Vendor_RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -47,4 +49,10 @@ Route::get('/vendor-register',[Vendor_RegisterController::class,'vendor']);
 Route::post('/vendor-register',[Vendor_RegisterController::class,'register_vendor']);
 Route::get('/vendor-login',[Vendor_LoginController::class,'loginPage']);
 Route::post('/vendor-login',[Vendor_LoginController::class,'login_vendor']);
+
+Route::get('/admin-login',[Admin_LoginController::class,'loginPage']);
+Route::post('/admin-login',[Admin_LoginController::class,'login_admin']);
+
+Route::post('/food-items',[FoodItems_Controller::class,'add_items']);
+Route::get('/my-profile',[FoodItems_Controller::class,'display_items']);
 

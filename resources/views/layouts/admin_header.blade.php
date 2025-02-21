@@ -21,15 +21,6 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="nav-links">
                     <ul class="navbar-nav">
-                        <li class="nav-item dropdown me-2">
-                            <a class="btn btn-outline-success dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">Login</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="customer-login">Customer Login</a></li>
-                                <li><a class="dropdown-item" href="vendor-login">Vendor Login</a></li>
-                                <li><a class="dropdown-item" href="admin-login">Admin Login</a></li>
-                            </ul>
-                        </li>
                         <li class="nav-item me-2">
                             <a class="btn btn-outline-success" href="registered-vendors">Registered Vendors</a>
                         </li>

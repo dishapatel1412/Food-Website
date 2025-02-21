@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\CustomerModel;
+use App\Models\AdminModelel;
 
-class Customer_LoginController extends Controller
+class Admin_LoginController extends Controller
 {
     public function loginPage()
     {
-        return view('customer_login');
+        return view('admin_login');
     }
 
-    public function login_customer(Request $request)
+    public function login_admin(Request $request)
     {
         $request->validate(
             [
@@ -23,11 +24,11 @@ class Customer_LoginController extends Controller
             ]
         );
 
-        $customer = CustomerModel::where('email', $request->email)->first();
+        $admin = AdminModel::where('email', $request->email)->first();
 
-        if ($customer && Hash::check($request->password, $customer->password)) {
-            Auth::login($customer);
-            return redirect('/');
+        if ($admin && Hash::check($request->password, $admin->password)) {
+            Auth::login($admin);
+            return redirect('/admin');
         }
         return back()->withErrors(['email' => 'Invalid Email', 'password' => 'Invalid Password']);
     }
