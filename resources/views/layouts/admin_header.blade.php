@@ -19,16 +19,6 @@
                     aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-end" id="nav-links">
-                    <ul class="navbar-nav">
-                        <li class="nav-item me-2">
-                            <a class="btn btn-outline-success" href="registered-vendors">Registered Vendors</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="btn btn-outline-success" href="order-summary">Orders</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </nav>
     </header>

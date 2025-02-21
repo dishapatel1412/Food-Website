@@ -37,7 +37,7 @@
                                               <a href="#" class="btn btn-primary">View Details</a>
                                             </div>
                                           </div>
-                                        @endforeach --}}
+                                        @endforeachRef --}}
                                     </div>
                                 </div>
                             </div>

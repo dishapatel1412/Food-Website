@@ -40,6 +40,22 @@ Route::get('/vendor-login', function () {
     return view('vendor_login');
 });
 
+Route::get('/about-us', function () {
+    return view('aboutus');
+});
+
+Route::get('/privacy-policy', function () {
+    return view('privacypolicy');
+});
+
+Route::get('/terms-condition', function () {
+    return view('termsandconditions');
+});
+
+Route::get('/contact-us', function () {
+    return view('contactus');
+});
+
 Route::get('/customer-register',[Customer_RegisterController::class,'customer']);
 Route::post('/customer-register',[Customer_RegisterController::class,'register_customer']);
 Route::get('/customer-login',[Customer_LoginController::class,'loginPage']);
