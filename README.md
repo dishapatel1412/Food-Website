@@ -1,6 +1,6 @@
-## Order Food on Rails
+## TravelBite
 
-**Order Food on Rails** is a Laravel-based food ordering application designed for travelers. The platform allows users to find restaurants near railway stations and order food while traveling.
+**TravelBite** is a Laravel-based food ordering application designed for travelers. The platform allows users to find restaurants near railway stations and order food while traveling.
 
 ## Features
 - Search for restaurants near railway stations  
