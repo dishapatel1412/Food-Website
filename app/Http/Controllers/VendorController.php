@@ -124,9 +124,22 @@ class VendorController extends Controller
 
     public function past_orders()
     {
-        if(Auth::guard('vendors')->check()) {
+        if (Auth::guard('vendors')->check()) {
             $vendorId = Auth::guard('vendors')->id();
-            $orders = DB::table('orders')->where('vendor_id', $vendorId)->select('');
+            $orders = DB::table('orders')
+                ->join('customers', 'orders.customer_id', '=', 'customers.customer_id')
+                ->join('fooditems', 'orders.item_id', '=', 'fooditems.item_id')
+                ->where('orders.vendor_id', $vendorId)
+                ->where('orders.order_status', 'delivered')
+                ->select('orders.*', 'customers.name as customer_name', 'fooditems.name as food_item_name')
+                ->get();
+
+            return view('vendor_dashboard', [
+                'pastOrders' => $orders,
+                'activeTab' => 'pastOrders'
+            ]);
+        } else {
+            return redirect()->route('vendor_login');
         }
     }
 

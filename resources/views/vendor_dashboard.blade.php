@@ -155,6 +155,36 @@
                                 </div>
                             @endif
                         </div>
+                    @elseif (isset($activeTab) && $activeTab == 'pastOrders')
+                        <div id="pastOrdersContainer">
+                            <h2>Past Delivered Orders</h2>
+                            @if (isset($pastOrders) && count($pastOrders) > 0)
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer Name</th>
+                                            <th>Food Item</th>
+                                            <th>Quantity</th>
+                                            <th>Total Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($pastOrders as $order)
+                                            <tr>
+                                                <td>{{ $order->order_id }}</td>
+                                                <td>{{ $order->customer_name }}</td>
+                                                <td>{{ $order->food_item_name }}</td>
+                                                <td>{{ $order->quantity }}</td>
+                                                <td>{{ $order->total_amount }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <p>No delivered orders found.</p>
+                            @endif
+                        </div>
                     @elseif (isset($activeTab) && $activeTab === 'trashedItems')
                         <div id="trashContainer">
                             <h2 id="pageTitle">Trashed Items</h2>
