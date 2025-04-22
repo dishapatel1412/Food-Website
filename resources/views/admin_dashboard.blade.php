@@ -100,7 +100,20 @@
                                             <td>{{ $vendor->state }}</td>
                                             <td>{{ $vendor->city }}</td>
                                             <td>{{ $vendor->gst_number }}</td>
-                                            <td>Accepted</td>
+                                            <td>
+                                                @if ($vendor->is_approved === 'pending')
+                                                    <form action="{{ route('approve_vendor', $vendor->vendor_id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                                    </form>
+                                                    <form action="{{ route('reject_vendor', $vendor->vendor_id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                                                    </form>
+                                                @else
+                                                    <span class="badge bg-{{ $vendor->is_approved === 'approved' ? 'success' : 'danger' }}">{{ ucfirst($vendor->is_approved) }}</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -143,7 +156,7 @@
             </section>
         </div>
     </main>
-    <footer class="fixed-bottom mt-3">
+    <footer class="mt-3">
         <div class="container">
             <ul class="row list-unstyled text-center">
                 <li class="col-4"><a href="about-us" class="text-body text-decoration-none">About Us</a></li>

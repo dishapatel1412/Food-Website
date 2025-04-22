@@ -36,12 +36,38 @@ class AdminController extends Controller
 
     public function viewVendors() {
         if(Auth::guard('admin')->check()) {
-            // $allVendors = Vendor::all();
-            $allVendors = Vendor::paginate(10);
+            $allVendors = Vendor::all();
+            // $allVendors = Vendor::paginate(10);
             return view('admin_dashboard', [
                 'vendors' => $allVendors,
                 'activeTab' => 'viewVendors'
             ]);
+        } else {
+            return redirect()->route('admin_login');
+        }
+    }
+
+    public function approveVendor($vendorId)
+    {
+        if (Auth::guard('admin')->check()) {
+            $vendor = Vendor::findOrFail($vendorId);
+            $vendor->is_approved = 'approved';
+            $vendor->save();
+
+            return redirect()->route('view_vendors')->with('success', 'Vendor approved successfully.');
+        } else {
+            return redirect()->route('admin_login');
+        }
+    }
+
+    public function rejectVendor($vendorId)
+    {
+        if (Auth::guard('admin')->check()) {
+            $vendor = Vendor::findOrFail($vendorId);
+            $vendor->is_approved = 'rejected';
+            $vendor->save();
+
+            return redirect()->route('view_vendors')->with('success', 'Vendor rejected successfully.');
         } else {
             return redirect()->route('admin_login');
         }

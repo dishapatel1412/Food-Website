@@ -65,6 +65,8 @@ Route::post('/verify-admin', [AdminController::class, 'validateAdmin'])->name('v
 Route::get('/admin-dashboard', [AdminController::class, 'dashboardAdmin'])->name('admin_dashboard');
 Route::get('/admin-logout', [AdminController::class, 'logoutAdmin'])->name('admin_logout');
 Route::get('/admin/view-vendors', [AdminController::class, 'viewVendors'])->name('view_vendors');
+Route::post('/vendors/{vendorId}/approve', [AdminController::class, 'approveVendor'])->name('approve_vendor');
+Route::post('/vendors/{vendorId}/reject', [AdminController::class, 'rejectVendor'])->name('reject_vendor');
 Route::get('/admin/view-customers', [AdminController::class, 'viewCustomers'])->name('view_customers');
 Route::get('/admin/total-sales', [AdminController::class, 'totalSales'])->name('total_sales');
 

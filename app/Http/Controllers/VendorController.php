@@ -30,10 +30,12 @@ class VendorController extends Controller
             'gst_number' => 'required'
         ]);
 
+        $vendorData['is_approved'] = 'pending';
+
         $vendor = Vendor::create($vendorData);
 
         if ($vendor) {
-            return redirect()->route('vendor_login');
+            return redirect()->route('vendor_login')->with('registration_pending', 'Your request has been sent to admin for approval. Please try again after sometime.');
         }
     }
 
@@ -49,8 +51,18 @@ class VendorController extends Controller
             'password' => 'required'
         ]);
 
-        if (Auth::guard('vendors')->attempt($credentials)) {
-            return redirect()->route('vendor_dashboard');
+        $vendor = Vendor::where('email', $request->email)->first();
+
+        if($credentials) {
+            if($vendor->is_approved =='approved') {
+                if (Auth::guard('vendors')->attempt($credentials)) {
+                    return redirect()->route('vendor_dashboard');
+                }
+            } elseif ($vendor->is_approved == 'pending') {
+                return back()->withErrors('registration_pending', 'Your request has been sent to admin for approval. Please try again after sometime.');
+            } else {
+                return back()->withErrors('registration_rejected', 'Your request has been rejected by admin. Please contact admin for more details.');
+            }
         } else {
             return back()->withErrors(['email' => 'Invalid Email', 'password' => 'Invalid Password']);
         }
