@@ -25,11 +25,6 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="nav-links">
                     <ul class="navbar-nav">
-                        <li class="nav-item me-2">
-                            {{-- @if (Auth::guard('vendors')->check())
-                                <h4 class="text-success">Welcome, {{ Auth::guard('vendors')->user()->owner_name }}</h4>
-                            @endif --}}
-                        </li>
                         @guest('vendors')
                             <li class="nav-item dropdown me-2">
                                 <a class="btn btn-outline-success dropdown-toggle" href="#" role="button"
@@ -73,8 +68,10 @@
             </nav>
 
             <section class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                @if (Auth::guard('vendors')->check())
-                    <h1 class="text-success">Welcome, {{ Auth::guard('vendors')->user()->owner_name }}</h1>
+                @if (!isset($activeTab))
+                    @if (Auth::guard('vendors')->check())
+                        <h1 class="text-success text-center">Hello, {{ Auth::guard('vendors')->user()->owner_name }}! Welcome to TravelBite</h1>
+                    @endif
                 @endif
                 <div class="row">
                     @if (isset($activeTab) && $activeTab === 'myProfile')

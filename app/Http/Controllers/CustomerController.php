@@ -201,6 +201,22 @@ class CustomerController extends Controller
         }
     }
 
+
+    public function searchFoodItems(Request $request)
+    {
+        $cityId = $request->input('city');
+        $searchTerm = $request->input('search');
+
+        $foodItems = DB::table('fooditems')
+            ->join('vendors', 'fooditems.vendor_id', '=', 'vendors.vendor_id')
+            ->where('vendors.city', $cityId)
+            ->where('fooditems.name', 'like', '%' . $searchTerm . '%')
+            ->select('fooditems.*', 'vendors.restaurant_name')
+            ->get();
+
+        return response()->json(['foodItems' => $foodItems]);
+    }
+
     public function logoutCustomer()
     {
         Auth::guard('customers')->logout();

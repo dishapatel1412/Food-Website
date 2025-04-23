@@ -23,6 +23,7 @@ Route::get('/order-now', [CustomerController::class, 'orderNow'])->name('order_n
 Route::get('/fetch-cities/{state_id}', [CustomerController::class, 'fetchCities'])->name('get_cities');
 Route::get('/get-restaurants', [CustomerController::class, 'getRestaurants'])->name('get_restaurants');
 Route::get('/restaurants/menu', [CustomerController::class, 'restaurantMenu'])->name('restaurant_menu');
+Route::get('/search-food-items', [CustomerController::class, 'searchFoodItems'])->name('search_food_items');
 Route::get('/my-orders', [CustomerController::class, 'myOrders'])->name('my_orders');
 Route::post('/add-to-cart/{item_id}', [CustomerController::class, 'addToCart'])->name('add_to_cart');
 Route::get('/cart', [CustomerController::class, 'showCart'])->name('show_cart');

@@ -24,6 +24,11 @@
                     aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <form class="d-flex flex-grow-1 mt-2" role="search" id="searchForm">
+                    <input class="form-control me-2" type="search" placeholder="Search" id="searchInput"
+                        aria-label="Search">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
                 <div class="collapse navbar-collapse justify-content-end" id="nav-links">
                     <ul class="navbar-nav">
                         <li class="nav-item me-2">
@@ -99,7 +104,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="orderModalLabel">Order Summary</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="orderModalBody">
                     </div>
@@ -194,10 +200,61 @@
                     }
                 });
             });
+
+            $('#searchForm').submit(function(e) {
+                e.preventDefault();
+                var searchTerm = $('#searchInput').val();
+                var cityId = $('#city').val();
+                if (cityId === 'Select') {
+                    alert('Please select a city first.');
+                    return;
+                }
+                searchFoodItems(cityId, searchTerm);
+            });
+
+            function displaySelectedItems() {
+                let selectedItems = [];
+                $('.select-item:checked').each(function() {
+                    let itemId = $(this).val();
+                    let quantity = $(this).closest('.card-body').find(
+                        '.quantity-input').val();
+                    let itemName = $(this).closest('.card-body').find(
+                        '.card-title').text();
+                    let itemPrice = $(this).closest('.card-body').find(
+                        '.card-text').filter(function() {
+                        return $(this).text().includes(
+                            'Price:');
+                    }).text().replace('Price: ₹', '');
+
+                    selectedItems.push({
+                        item_id: itemId,
+                        quantity: quantity,
+                        item_name: itemName,
+                        item_price: itemPrice
+                    });
+                });
+                let summaryHtml = '<h4>Selected Items:</h4><ul>';
+                let total = 0;
+                selectedItems.forEach(item => {
+                    let itemTotal = item.item_price * item.quantity;
+                    total += itemTotal;
+                    summaryHtml +=
+                        `<li>${item.item_name} (Qty: ${item.quantity}) - ₹${itemTotal}</li>`;
+                });
+                summaryHtml += `</ul><p>Total: ₹${total}</p>`;
+                if (selectedItems.length > 0) {
+                    $('#selectedItemsSummary').show();
+                } else {
+                    $('#selectedItemsSummary').hide();
+                }
+                $('#selectedItemsSummary').data('selected-items',
+                    selectedItems);
+            }
+
             $(document).on('click', '.get-menu-button', function() {
                 let vendorId = $(this).data('vendor-id');
                 let restaurantName = $(this).data('restaurant-name');
-                $('#restaurantList .row').hide();
+                $('#restaurantList').hide();
                 $.ajax({
                     url: "{{ url('/restaurants/menu') }}",
                     type: 'GET',
@@ -232,52 +289,13 @@
                                 `;
                             });
                             $('#foodItemsSection').html(`
-                                <button class="btn btn-secondary" id="backButton">Back</button>
+                                <button class="btn btn-secondary mt-1" id="backButton">Back</button>
                                 <div class="row row-cols-1 row-cols-md-3 g-4">${menuHtml}</div>
                             `);
                             $('#backButton').on('click', function() {
                                 $('#foodItemsSection').empty();
-                                $('#restaurantList .row').show();
+                                $('#restaurantList').show();
                             });
-
-                            function displaySelectedItems() {
-                                let selectedItems = [];
-                                $('.select-item:checked').each(function() {
-                                    let itemId = $(this).val();
-                                    let quantity = $(this).closest('.card-body').find(
-                                        '.quantity-input').val();
-                                    let itemName = $(this).closest('.card-body').find(
-                                        '.card-title').text();
-                                    let itemPrice = $(this).closest('.card-body').find(
-                                        '.card-text').filter(function() {
-                                        return $(this).text().includes(
-                                            'Price:');
-                                    }).text().replace('Price: ₹', '');
-
-                                    selectedItems.push({
-                                        item_id: itemId,
-                                        quantity: quantity,
-                                        item_name: itemName,
-                                        item_price: itemPrice
-                                    });
-                                });
-                                let summaryHtml = '<h4>Selected Items:</h4><ul>';
-                                let total = 0;
-                                selectedItems.forEach(item => {
-                                    let itemTotal = item.item_price * item.quantity;
-                                    total += itemTotal;
-                                    summaryHtml +=
-                                        `<li>${item.item_name} (Qty: ${item.quantity}) - ₹${itemTotal}</li>`;
-                                });
-                                summaryHtml += `</ul><p>Total: ₹${total}</p>`;
-                                if (selectedItems.length > 0) {
-                                    $('#selectedItemsSummary').show();
-                                } else {
-                                    $('#selectedItemsSummary').hide();
-                                }
-                                $('#selectedItemsSummary').data('selected-items',
-                                    selectedItems);
-                            }
                             $(document).on('change', '.select-item', function() {
                                 displaySelectedItems();
                             });
@@ -292,6 +310,64 @@
                     }
                 });
             });
+
+            function searchFoodItems(cityId, searchTerm) {
+                $.ajax({
+                    url: "{{ url('/search-food-items') }}",
+                    type: 'GET',
+                    data: {
+                        city: cityId,
+                        search: searchTerm
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#restaurantList').hide();
+                        $('#foodItemsSection').empty();
+                        if (data.foodItems && data.foodItems.length > 0) {
+                            let menuHtml =
+                                '<button class="btn btn-secondary mt-1" id="backToRestaurants">Back to Restaurants</button>';
+                            data.foodItems.forEach(item => {
+                                menuHtml += `
+                                    <div class="col-sm-3 m-3">
+                                        <div class="card">
+                                            ${item.image_path ? `<img src="{{ url('images/') }}/${item.image_path}" class="card-img-top" alt="${item.name}" height="300px">` : ''}
+                                            <div class="card-body">
+                                                <h5 class="card-title">${item.name}</h5>
+                                                <p class="card-text restaurant-name">${item.restaurant_name}</p>
+                                                <p class="card-text">Price: ₹${item.price}</p>
+                                                Quantity: <input type="number" class="form-control quantity-input m-1" value="1" min="1">
+                                                <div>
+                                                    <input class="form-check-input select-item" type="checkbox" value="${item.item_id}" id="item-${item.id}">
+                                                    <label class="form-check-label" for="item-${item.item_id}">Select</label>
+                                                </div>
+                                                <form action="/add-to-cart/${item.item_id}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            $('#foodItemsSection').html(menuHtml);
+
+                            $('#backToRestaurants').on('click', function() {
+                                $('#foodItemsSection').empty();
+                                $('#restaurantList').show();
+                            });
+                            displaySelectedItems();
+                        } else {
+                            $('#foodItemsSection').html(
+                                '<p class="text-center p-5 m-5">No food items found matching your search.</p>'
+                            );
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error searching food items:", error);
+                        alert("Failed to search food items. Please try again.");
+                    }
+                });
+            }
 
             $(document).on('click', '#proceedToOrder', function() {
                 let selectedItems = $('#selectedItemsSummary').data('selected-items');
@@ -322,11 +398,15 @@
                         "currency": "INR",
                         "name": "TravelBite",
                         "description": "Order Payment",
-                        "handler": function (response) {
+                        "handler": function(response) {
                             let form = $('#razorpay-form');
-                            form.append('<input type="hidden" name="razorpay_payment_id" value="' + response.razorpay_payment_id + '">');
-                            form.append('<input type="hidden" name="total_amount" value="' + totalAmount + '">');
-                            form.append('<input type="hidden" name="items" value=' + JSON.stringify(selectedItems) + '\>');
+                            form.append(
+                                '<input type="hidden" name="razorpay_payment_id" value="' +
+                                response.razorpay_payment_id + '">');
+                            form.append('<input type="hidden" name="total_amount" value="' +
+                                totalAmount + '">');
+                            form.append('<input type="hidden" name="items" value=' + JSON
+                                .stringify(selectedItems) + '\>');
                             form.submit();
                         },
                         "theme": {
@@ -334,8 +414,8 @@
                         }
                     };
                     let rzp = new Razorpay(options);
-                rzp.open();
-            });
+                    rzp.open();
+                });
 
             });
         });
