@@ -10,8 +10,6 @@ class Order extends Model
 {
     use Notifiable, HasFactory;
 
-    public $timestamps = false;
-
     protected $table = 'orders';
     protected $primaryKey = 'order_id';
     protected $fillable = ['item_id','vendor_id','customer_id','quantity','order_status','order_date','delivery_date','total_amount'];

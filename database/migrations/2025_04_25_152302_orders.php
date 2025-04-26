@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('order_status',['pending','accepted','delivered','canceled'])->default('pending');
             $table->timestamp('order_date')->nullable();
             $table->decimal('total_amount', 8, 2)->nullable();
+            $table->timestamps();
 
             $table->foreign('item_id')->references('item_id')->on('fooditems');
             $table->foreign('vendor_id')->references('vendor_id')->on('vendors');

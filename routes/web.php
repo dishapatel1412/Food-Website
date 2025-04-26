@@ -29,7 +29,6 @@ Route::post('/add-to-cart/{item_id}', [CustomerController::class, 'addToCart'])-
 Route::get('/cart', [CustomerController::class, 'showCart'])->name('show_cart');
 Route::post('/remove-from-cart/{id}', [CustomerController::class, 'removeFromCart'])->name('remove_from_cart');
 Route::get('/cart-page', [CustomerController::class, 'showCart']);
-
 Route::post('/cancel-order/{orderId}', [CustomerController::class, 'cancelOrder'])->name('cancel_order');
 Route::get('/customer-logout', [CustomerController::class, 'logoutCustomer'])->name('customer_logout');
 
@@ -56,7 +55,6 @@ Route::post('/delete/{id}', [FoodItemsController::class, 'delete'])->name('delet
 Route::get('/get-trashed-items', [FoodItemsController::class, 'getTrashedItems'])->name('get_trashed_items');
 
 // Order Routes
-// web.php
 Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('place_order');
 Route::post('/vendor/update-order-status/{id}', [OrderController::class, 'updateStatus'])->name('update_order_status');
 
@@ -69,8 +67,11 @@ Route::get('/admin/view-vendors', [AdminController::class, 'viewVendors'])->name
 Route::post('/vendors/{vendorId}/approve', [AdminController::class, 'approveVendor'])->name('approve_vendor');
 Route::post('/vendors/{vendorId}/reject', [AdminController::class, 'rejectVendor'])->name('reject_vendor');
 Route::get('/admin/view-customers', [AdminController::class, 'viewCustomers'])->name('view_customers');
-Route::get('/admin/total-sales', [AdminController::class, 'totalSales'])->name('total_sales');
+// Route::get('/admin/sales-report/select-city', [AdminController::class, 'selectCityForm'])->name('sales_report_city_select');
+// Route::post('/admin/sales-report/select-type', [AdminController::class, 'selectReportType'])->name('sales_report_type_select');
+// Route::post('/admin/sales-report/generate', [AdminController::class, 'generateReport'])->name('generate_sales_report');
+Route::get('/admin/sales-report', [AdminController::class, 'salesReport'])->name('sales_report');
+Route::post('/admin/sales-report', [AdminController::class, 'salesReport']);
 
 // Razorpay Routes
-// Route::get('payment', [RazorpayController::class, 'index']);
 Route::post('/handlepayment', [RazorpayController::class, 'store']);

@@ -264,7 +264,7 @@
             </div>
         </div>
     </div>
-    <footer class="fixed-bottom mt-3">
+    <footer class="mt-3">
         <div class="container">
             <ul class="row list-unstyled text-center">
                 <li class="col-4"><a href="about-us" class="text-body text-decoration-none">About Us</a></li>
