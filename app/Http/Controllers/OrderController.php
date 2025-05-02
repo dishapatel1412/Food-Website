@@ -19,6 +19,7 @@ class OrderController extends Controller
         ]);
 
         $customerId = Auth::guard('customers')->id();
+        $paymentId = $request->input('payment_id');
 
         foreach ($request->input('items') as $itemData) {
             $itemId = $itemData['item_id'];
@@ -36,9 +37,10 @@ class OrderController extends Controller
                 'customer_id' => $customerId,
                 'item_id' => $itemId,
                 'vendor_id' => $foodItem->vendor_id,
+                'payment_id' => $paymentId,
                 'quantity' => $quantity,
                 'total_amount' => $totalAmount,
-                'order_status' => 'Pending',
+                'order_status' => 'pending',
                 'order_date' => now(),
             ]);
         }

@@ -72,6 +72,8 @@
                                 <th>Order ID</th>
                                 <th>Food Name</th>
                                 <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total Amount</th>
                                 <th>Order Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -83,6 +85,8 @@
                                         <td>{{ $order->order_id }}</td>
                                         <td>{{ $order->food_name }}</td>
                                         <td>{{ $order->food_price }}</td>
+                                        <td>{{ $order->quantity }}</td>
+                                        <td>{{ $order->total_amount }}</td>
                                         <td>{{ $order->order_status }}</td>
                                         <td>
                                             @if ($order->order_status == 'pending' || $order->order_status == 'accepted')

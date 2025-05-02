@@ -32,36 +32,12 @@ class RazorpayController extends Controller
         $checkout->email = Auth::guard('customers')->user()->email;
         $checkout->amount = $totalCost;
         $checkout->razorpay_payment_id = $request->razorpay_payment_id;
-        $checkout->order_id = $payment->id;
         $checkout->status = 1;
         $checkout->save();
 
         $customerId = Auth::guard('customers')->id();
 
         $items = json_decode($request->items, true);
-        // foreach ($items as $item) {
-        //     if (!isset($item['item_id']) || !isset($item['quantity'])) {
-        //         continue;
-        //     }
-
-        //     $foodItem = FoodItems::find($item['item_id']);
-        //     if (!$foodItem || $item['quantity'] < 1) {
-        //         continue;
-        //     }
-
-        //     $totalAmount = $foodItem->price * $item['quantity'];
-
-        //     Order::create([
-        //         'customer_id' => $customerId,
-        //         'item_id' => $foodItem->item_id,
-        //         'vendor_id' => $foodItem->vendor_id,
-        //         'quantity' => $item['quantity'],
-        //         'total_amount' => $totalAmount,
-        //         'order_status' => 'Pending',
-        //         'order_date' => now(),
-        //     ]);
-        // }
-
         // Group items by vendor
         $itemsByVendor = [];
         foreach ($items as $item) {
@@ -87,6 +63,7 @@ class RazorpayController extends Controller
                 'customer_id' => $customerId,
                 'item_id' => $foodItem->item_id,
                 'vendor_id' => $vendorId,
+                'payment_id' => $checkout->payment_id,
                 'quantity' => $quantity,
                 'total_amount' => $totalAmount,
                 'order_status' => 'Pending',

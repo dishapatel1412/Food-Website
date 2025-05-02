@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('email');
             $table->decimal('amount', 8, 2);
             $table->string('razorpay_payment_id')->nullable();
-            $table->string('order_id')->nullable();
             $table->boolean('status')->default(0);
         });
     }

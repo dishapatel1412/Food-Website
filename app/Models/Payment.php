@@ -12,5 +12,5 @@ class Payment extends Model
     protected $table = 'payments';
     protected $primaryKey = 'payment_id';
 
-    protected $fillable = ['name', 'email', 'amount', 'order_id', 'razorpay_payment_id', 'status'];
+    protected $fillable = ['name', 'email', 'amount', 'razorpay_payment_id', 'status'];
 }
